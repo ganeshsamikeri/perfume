@@ -1,10 +1,9 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useParams, Link } from "react-router-dom";
-import axios from "axios";
+import api from "../../api/axios";
 import "./ProductPage.css";
 import { StoreContext } from "../../context/StoreContext";
 import ImageGallery from "../../components/ImageGallery/ImageGallery";
-import { API_BASE_URL } from "../../config";   // ✅ ADD THIS
 
 export default function ProductPage() {
   const { id } = useParams();
@@ -12,29 +11,22 @@ export default function ProductPage() {
 
   const [product, setProduct] = useState(null);
   const [selectedSize, setSelectedSize] = useState("");
-
   const [reviews, setReviews] = useState([]);
   const [reviewData, setReviewData] = useState({
     name: "",
     rating: 5,
     comment: "",
   });
-
   const [related, setRelated] = useState([]);
 
-  // ----------------------------
-  // LOAD PRODUCT + REVIEWS + RELATED
-  // ----------------------------
   useEffect(() => {
-    axios
-      .get(`${API_BASE_URL}/api/products/${id}`)
+    api.get(`/products/${id}`)
       .then((res) => {
         const p = res.data;
         setProduct(p);
         setSelectedSize(p.sizes?.[0] || "");
 
-        // Load related products
-        axios.get(`${API_BASE_URL}/api/products`).then((all) => {
+        api.get("/products").then((all) => {
           const filtered = all.data.filter(
             (item) => item.brand === p.brand && item._id !== p._id
           );
@@ -43,23 +35,17 @@ export default function ProductPage() {
       })
       .catch((err) => console.log(err));
 
-    // Load reviews
-    axios
-      .get(`${API_BASE_URL}/api/reviews/${id}`)
+    api.get(`/reviews/${id}`)
       .then((res) => setReviews(res.data))
       .catch((err) => console.log(err));
   }, [id]);
 
   if (!product) return <h1>Loading...</h1>;
 
-  // ----------------------------
-  // SUBMIT REVIEW
-  // ----------------------------
   const submitReview = (e) => {
     e.preventDefault();
 
-    axios
-      .post(`${API_BASE_URL}/api/reviews/${id}`, reviewData)
+    api.post(`/reviews/${id}`, reviewData)
       .then((res) => {
         setReviews([...reviews, res.data]);
         setReviewData({ name: "", rating: 5, comment: "" });
@@ -69,20 +55,17 @@ export default function ProductPage() {
 
   return (
     <div className="product-page-container">
-      {/* LEFT SIDE — IMAGE GALLERY */}
+
       <div className="image-section">
         <ImageGallery images={product.images} />
       </div>
 
-      {/* RIGHT SIDE — PRODUCT DETAILS */}
       <div className="info-section">
         <h1>{product.name}</h1>
         <p><strong>Brand:</strong> {product.brand}</p>
         <p className="description">{product.description}</p>
-
         <h2 className="price">₹{product.price}</h2>
 
-        {/* SIZE SELECTOR */}
         <label>Select Size:</label>
         <select
           value={selectedSize}
@@ -95,7 +78,6 @@ export default function ProductPage() {
           ))}
         </select>
 
-        {/* ADD TO CART */}
         <button
           className="add-to-cart-btn"
           onClick={() => addToCart(product, selectedSize)}
@@ -103,7 +85,6 @@ export default function ProductPage() {
           Add to Cart
         </button>
 
-        {/* SHARE BUTTON */}
         <button
           className="share-btn"
           onClick={() => {
@@ -117,7 +98,6 @@ export default function ProductPage() {
           Share Product
         </button>
 
-        {/* REVIEWS SECTION */}
         <div className="reviews-section">
           <h2>Reviews</h2>
 
@@ -132,7 +112,6 @@ export default function ProductPage() {
             ))
           )}
 
-          {/* ADD REVIEW FORM */}
           <form onSubmit={submitReview} className="review-form">
             <input
               type="text"
@@ -171,7 +150,6 @@ export default function ProductPage() {
         </div>
       </div>
 
-      {/* RELATED PRODUCTS */}
       <div className="related-section">
         <h2>Related Products</h2>
 
