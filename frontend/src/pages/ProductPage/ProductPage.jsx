@@ -1,9 +1,10 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useParams, Link } from "react-router-dom";
-import api from "../../api/axios";
+import axios from "axios";
 import "./ProductPage.css";
 import { StoreContext } from "../../context/StoreContext";
 import ImageGallery from "../../components/ImageGallery/ImageGallery";
+import { API_BASE_URL } from "../../config";   // ✅ ADD THIS
 
 export default function ProductPage() {
   const { id } = useParams();
@@ -12,7 +13,6 @@ export default function ProductPage() {
   const [product, setProduct] = useState(null);
   const [selectedSize, setSelectedSize] = useState("");
 
-  // Reviews
   const [reviews, setReviews] = useState([]);
   const [reviewData, setReviewData] = useState({
     name: "",
@@ -20,22 +20,21 @@ export default function ProductPage() {
     comment: "",
   });
 
-  // Related
   const [related, setRelated] = useState([]);
 
   // ----------------------------
   // LOAD PRODUCT + REVIEWS + RELATED
   // ----------------------------
   useEffect(() => {
-    api
-      .get(`/products/${id}`)
+    axios
+      .get(`${API_BASE_URL}/api/products/${id}`)
       .then((res) => {
         const p = res.data;
         setProduct(p);
         setSelectedSize(p.sizes?.[0] || "");
 
-        // Load related products same brand
-        api.get("/products").then((all) => {
+        // Load related products
+        axios.get(`${API_BASE_URL}/api/products`).then((all) => {
           const filtered = all.data.filter(
             (item) => item.brand === p.brand && item._id !== p._id
           );
@@ -44,9 +43,9 @@ export default function ProductPage() {
       })
       .catch((err) => console.log(err));
 
-    // Load Reviews
-    api
-      .get(`/reviews/${id}`)
+    // Load reviews
+    axios
+      .get(`${API_BASE_URL}/api/reviews/${id}`)
       .then((res) => setReviews(res.data))
       .catch((err) => console.log(err));
   }, [id]);
@@ -54,13 +53,13 @@ export default function ProductPage() {
   if (!product) return <h1>Loading...</h1>;
 
   // ----------------------------
-  // Submit Review
+  // SUBMIT REVIEW
   // ----------------------------
   const submitReview = (e) => {
     e.preventDefault();
 
-    api
-      .post(`/reviews/${id}`, reviewData)
+    axios
+      .post(`${API_BASE_URL}/api/reviews/${id}`, reviewData)
       .then((res) => {
         setReviews([...reviews, res.data]);
         setReviewData({ name: "", rating: 5, comment: "" });
@@ -70,7 +69,6 @@ export default function ProductPage() {
 
   return (
     <div className="product-page-container">
-
       {/* LEFT SIDE — IMAGE GALLERY */}
       <div className="image-section">
         <ImageGallery images={product.images} />
@@ -119,9 +117,7 @@ export default function ProductPage() {
           Share Product
         </button>
 
-        {/* ----------------------------
-            REVIEWS SECTION
-        ---------------------------- */}
+        {/* REVIEWS SECTION */}
         <div className="reviews-section">
           <h2>Reviews</h2>
 
@@ -175,9 +171,7 @@ export default function ProductPage() {
         </div>
       </div>
 
-      {/* ----------------------------
-          RELATED PRODUCTS
-      ---------------------------- */}
+      {/* RELATED PRODUCTS */}
       <div className="related-section">
         <h2>Related Products</h2>
 
