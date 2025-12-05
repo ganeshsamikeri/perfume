@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useParams, Link } from "react-router-dom";
-import api from "../../api/axios";
+import api from "../../api/axios"; // axios instance with Render BASE_URL
 import "./ProductPage.css";
 import { StoreContext } from "../../context/StoreContext";
 import ImageGallery from "../../components/ImageGallery/ImageGallery";
@@ -19,6 +19,9 @@ export default function ProductPage() {
   });
   const [related, setRelated] = useState([]);
 
+  // ----------------------------
+  // LOAD PRODUCT + REVIEWS + RELATED
+  // ----------------------------
   useEffect(() => {
     api.get(`/products/${id}`)
       .then((res) => {
@@ -26,6 +29,7 @@ export default function ProductPage() {
         setProduct(p);
         setSelectedSize(p.sizes?.[0] || "");
 
+        // Load related products same brand
         api.get("/products").then((all) => {
           const filtered = all.data.filter(
             (item) => item.brand === p.brand && item._id !== p._id
@@ -35,6 +39,7 @@ export default function ProductPage() {
       })
       .catch((err) => console.log(err));
 
+    // Load Reviews
     api.get(`/reviews/${id}`)
       .then((res) => setReviews(res.data))
       .catch((err) => console.log(err));
@@ -42,6 +47,9 @@ export default function ProductPage() {
 
   if (!product) return <h1>Loading...</h1>;
 
+  // ----------------------------
+  // SUBMIT REVIEW
+  // ----------------------------
   const submitReview = (e) => {
     e.preventDefault();
 
@@ -56,10 +64,12 @@ export default function ProductPage() {
   return (
     <div className="product-page-container">
 
+      {/* LEFT SIDE — IMAGE GALLERY */}
       <div className="image-section">
         <ImageGallery images={product.images} />
       </div>
 
+      {/* RIGHT SIDE — PRODUCT DETAILS */}
       <div className="info-section">
         <h1>{product.name}</h1>
         <p><strong>Brand:</strong> {product.brand}</p>
@@ -98,6 +108,7 @@ export default function ProductPage() {
           Share Product
         </button>
 
+        {/* REVIEWS SECTION */}
         <div className="reviews-section">
           <h2>Reviews</h2>
 
@@ -150,6 +161,7 @@ export default function ProductPage() {
         </div>
       </div>
 
+      {/* RELATED PRODUCTS */}
       <div className="related-section">
         <h2>Related Products</h2>
 

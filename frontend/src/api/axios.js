@@ -1,6 +1,7 @@
 import axios from "axios";
-import { API_BASE_URL } from "../config";
 
-export default axios.create({
-  baseURL: `${API_BASE_URL}/api`,
+const api = axios.create({
+  baseURL: "https://perfume-1-zm0w.onrender.com/api", 
 });
+
+export default api;
