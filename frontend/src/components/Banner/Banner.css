@@ -1,0 +1,10 @@
+.banner { height: 420px; background-size:cover; background-position:center; display:flex; align-items:center; }
+.banner-content { background: rgba(0,0,0,0.35); color: #fff; padding: 28px; margin-left: 40px; border-radius:10px; max-width:520px; }
+.banner h1 { font-size:36px; margin-bottom:10px; line-height:1.05; }
+.banner p { margin-bottom:18px; color: #eee; }
+.cta { background:#111; color:#fff; padding:10px 16px; text-decoration:none; border-radius:6px; }
+@media (max-width:700px) {
+  .banner { height: 320px; }
+  .banner-content { margin-left: 20px; padding:18px; }
+  .banner h1 { font-size:24px; }
+}

@@ -1,0 +1,123 @@
+/* Mobile Banner */
+@media (max-width: 768px) {
+  .cta-banner {
+    flex-direction: column;
+    padding: 20px;
+    text-align: center;
+  }
+
+  .cta-right img {
+    width: 100%;
+    height: 220px;
+  }
+
+  .cta-left h1 {
+    font-size: 26px;
+  }
+}
+
+/* Responsive Product Grid */
+@media (max-width: 768px) {
+  .product-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 18px;
+    padding: 10px;
+  }
+
+  .product-card {
+    padding: 14px;
+  }
+
+  .product-img {
+    height: 200px;
+  }
+}
+.home-container {
+  padding: 20px 60px;
+}
+
+.home-container h1 {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 30px;
+  text-align: left;
+}
+
+/* -------- PRODUCT GRID -------- */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 25px;
+}
+
+/* -------- PRODUCT CARD -------- */
+.product-card {
+  background: #fff;
+  padding: 20px;
+  border-radius: 14px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.08);
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* -------- PRODUCT IMAGE -------- */
+.product-card-img {
+  width: 100%;
+  height: 230px;
+  object-fit: contain;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+/* -------- TEXT -------- */
+.product-card h2 {
+  font-size: 20px;
+  margin: 5px 0;
+  font-weight: 600;
+}
+
+.product-card p {
+  font-size: 14px;
+  color: #555;
+  margin: 8px 0 12px;
+}
+
+.product-card h3 {
+  font-size: 22px;
+  margin-bottom: 15px;
+  font-weight: 700;
+}
+
+/* -------- BUTTON -------- */
+.details-btn {
+  display: inline-block;
+  padding: 10px 20px;
+  background: black;
+  color: white;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 550;
+  transition: 0.3s ease;
+}
+
+.details-btn:hover {
+  background: #444;
+}
+
+/* -------- MOBILE RESPONSIVE -------- */
+@media (max-width: 768px) {
+  .home-container {
+    padding: 20px;
+  }
+
+  .product-card-img {
+    height: 200px;
+  }
+}
+

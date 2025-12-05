@@ -1,0 +1,6 @@
+/* Global reset and base fonts */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html,body,#root { height: 100%; }
+body { font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; background:#f6f7fb; color:#111; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
+a { color:inherit; text-decoration:none; }
+button { font-family: inherit; }

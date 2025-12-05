@@ -1,0 +1,12 @@
+[
+  {
+    "username": "John",
+    "rating": 5,
+    "comment": "Amazing fragrance!"
+  },
+  {
+    "username": "Aisha",
+    "rating": 4,
+    "comment": "Long lasting and premium."
+  }
+]

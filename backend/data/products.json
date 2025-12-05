@@ -1,0 +1,66 @@
+[
+  {
+    "name": "Royal Oud",
+    "brand": "Luxury Collection",
+    "description": "A majestic blend of smoky oud and warm spices, perfect for evening elegance.",
+    "price": 120,
+    "image": "/images/royal-oud.jpg",
+    "gallery": [
+      "/images/royal-oud1.jpg",
+      "/images/royal-oud2.jpg"
+    ],
+    "sizes": ["50ml", "100ml"]
+  },
+
+  {
+    "name": "Bloom Rose",
+    "brand": "Signature",
+    "description": "A fresh floral fragrance with smooth rose petals and soft musk.",
+    "price": 99,
+    "image": "/images/bloom-rose.jpg",
+    "gallery": [
+      "/images/bloom-rose1.jpg",
+      "/images/bloom-rose2.jpg"
+    ],
+    "sizes": ["30ml", "50ml", "100ml"]
+  },
+
+  {
+    "name": "Dior Sauvage",
+    "brand": "Dior",
+    "description": "A bold, intense, spicy fragrance inspired by wild open landscapes.",
+    "price": 199,
+    "image": "/images/dior-sauvage.jpg",
+    "gallery": [
+      "/images/dior-sauvage1.jpg",
+      "/images/dior-sauvage2.jpg"
+    ],
+    "sizes": ["50ml", "100ml"]
+  },
+
+  {
+    "name": "Versace Eros",
+    "brand": "Versace",
+    "description": "A powerful masculine fragrance blending mint leaves, lemon zest, and tonka bean.",
+    "price": 150,
+    "image": "/images/versace-eros.jpg",
+    "gallery": [
+      "/images/versace-eros1.jpg",
+      "/images/versace-eros2.jpg"
+    ],
+    "sizes": ["50ml", "100ml"]
+  },
+
+  {
+    "name": "Gucci Bloom",
+    "brand": "Gucci",
+    "description": "A rich white floral perfume capturing jasmine, tuberose, and Rangoon creeper.",
+    "price": 175,
+    "image": "/images/gucci-bloom.jpg",
+    "gallery": [
+      "/images/gucci-bloom1.jpg",
+      "/images/gucci-bloom2.jpg"
+    ],
+    "sizes": ["30ml", "50ml", "100ml"]
+  }
+]
