@@ -8,3 +8,27 @@
   .banner-content { margin-left: 20px; padding:18px; }
   .banner h1 { font-size:24px; }
 }
+/* ------------------------------
+   MOBILE RESPONSIVE BANNER FIXED
+------------------------------ */
+@media (max-width: 600px) {
+  .banner {
+    height: 200px;              /* reduce size on mobile */
+    padding-left: 15px;         /* align content nicely */
+    justify-content: flex-start; 
+  }
+
+  .banner-content {
+    max-width: 260px;
+  }
+
+  .banner-title {
+    font-size: 20px;            /* smaller text */
+    line-height: 24px;
+  }
+
+  .banner-btn {
+    font-size: 14px;
+    padding: 8px 14px;          /* smaller button */
+  }
+}
