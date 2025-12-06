@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
+import path from "path";
 
 import productRoutes from "./routes/productRoutes.js";
 import reviewRoutes from "./routes/reviewRoutes.js";
@@ -17,11 +18,17 @@ app.use(cors());
 app.use(express.json());
 
 // ------------------------------
-// STATIC IMAGES FOLDER
+// STATIC IMAGES FOLDER (FIXED)
 // ------------------------------
-// Allows frontend to access images like:
-// http://localhost:5000/images/filename.jpg
-app.use("/images", express.static("public/images"));
+// Correct absolute path to /public/images
+const __dirname = path.resolve();
+
+app.use(
+  "/images",
+  express.static(path.join(__dirname, "public", "images"))
+);
+
+// Example: http://localhost:5000/images/oud.jpg
 
 
 // ------------------------------
@@ -38,7 +45,6 @@ mongoose
 // ------------------------------
 app.use("/api/products", productRoutes);
 app.use("/api/reviews", reviewRoutes);
-
 
 
 // ------------------------------
