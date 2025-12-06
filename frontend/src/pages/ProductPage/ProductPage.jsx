@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useParams, Link } from "react-router-dom";
-import api from "../../api/axios"; // axios instance with Render BASE_URL
+import api from "../../api/axios";
 import "./ProductPage.css";
 import { StoreContext } from "../../context/StoreContext";
 import ImageGallery from "../../components/ImageGallery/ImageGallery";
@@ -20,16 +20,19 @@ export default function ProductPage() {
   const [related, setRelated] = useState([]);
 
   // ----------------------------
-  // LOAD PRODUCT + REVIEWS + RELATED
+  // LOAD PRODUCT + RELATED + REVIEWS
   // ----------------------------
   useEffect(() => {
-    api.get(`/products/${id}`)
+    api
+      .get(`/products/${id}`)
       .then((res) => {
         const p = res.data;
         setProduct(p);
+
+        // auto select first size
         setSelectedSize(p.sizes?.[0] || "");
 
-        // Load related products same brand
+        // load related products (same brand)
         api.get("/products").then((all) => {
           const filtered = all.data.filter(
             (item) => item.brand === p.brand && item._id !== p._id
@@ -39,8 +42,9 @@ export default function ProductPage() {
       })
       .catch((err) => console.log(err));
 
-    // Load Reviews
-    api.get(`/reviews/${id}`)
+    // load reviews
+    api
+      .get(`/reviews/${id}`)
       .then((res) => setReviews(res.data))
       .catch((err) => console.log(err));
   }, [id]);
@@ -53,7 +57,8 @@ export default function ProductPage() {
   const submitReview = (e) => {
     e.preventDefault();
 
-    api.post(`/reviews/${id}`, reviewData)
+    api
+      .post(`/reviews/${id}`, reviewData)
       .then((res) => {
         setReviews([...reviews, res.data]);
         setReviewData({ name: "", rating: 5, comment: "" });
@@ -64,18 +69,24 @@ export default function ProductPage() {
   return (
     <div className="product-page-container">
 
-      {/* LEFT SIDE — IMAGE GALLERY */}
+      {/* LEFT SIDE - IMAGE GALLERY */}
       <div className="image-section">
         <ImageGallery images={product.images} />
       </div>
 
-      {/* RIGHT SIDE — PRODUCT DETAILS */}
+      {/* RIGHT SIDE - DETAILS */}
       <div className="info-section">
         <h1>{product.name}</h1>
-        <p><strong>Brand:</strong> {product.brand}</p>
+
+        <p>
+          <strong>Brand:</strong> {product.brand}
+        </p>
+
         <p className="description">{product.description}</p>
+
         <h2 className="price">₹{product.price}</h2>
 
+        {/* SIZE SELECT */}
         <label>Select Size:</label>
         <select
           value={selectedSize}
@@ -88,6 +99,7 @@ export default function ProductPage() {
           ))}
         </select>
 
+        {/* BUTTONS */}
         <button
           className="add-to-cart-btn"
           onClick={() => addToCart(product, selectedSize)}
@@ -108,7 +120,7 @@ export default function ProductPage() {
           Share Product
         </button>
 
-        {/* REVIEWS SECTION */}
+        {/* REVIEWS */}
         <div className="reviews-section">
           <h2>Reviews</h2>
 
@@ -117,12 +129,15 @@ export default function ProductPage() {
           ) : (
             reviews.map((rev, index) => (
               <div key={index} className="review-card">
-                <h4>{rev.name} ⭐{rev.rating}</h4>
+                <h4>
+                  {rev.name} ⭐{rev.rating}
+                </h4>
                 <p>{rev.comment}</p>
               </div>
             ))
           )}
 
+          {/* REVIEW FORM */}
           <form onSubmit={submitReview} className="review-form">
             <input
               type="text"
@@ -141,7 +156,9 @@ export default function ProductPage() {
               }
             >
               {[5, 4, 3, 2, 1].map((r) => (
-                <option key={r} value={r}>{r}</option>
+                <option key={r} value={r}>
+                  {r}
+                </option>
               ))}
             </select>
 
@@ -175,7 +192,7 @@ export default function ProductPage() {
                 to={`/product/${item._id}`}
                 className="related-card"
               >
-                <img src={item.images?.[0]} alt={item.name} />
+                <img src={item.images[0]} alt={item.name} />
                 <h4>{item.name}</h4>
                 <p>₹{item.price}</p>
               </Link>

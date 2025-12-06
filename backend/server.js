@@ -11,47 +11,50 @@ dotenv.config();
 
 const app = express();
 
-// ------------------------------
+// --------------------------------------------------------------------
 // MIDDLEWARE
-// ------------------------------
+// --------------------------------------------------------------------
 app.use(cors());
 app.use(express.json());
 
-// ------------------------------
-// STATIC IMAGES FOLDER (FIXED)
-// ------------------------------
-// Correct absolute path to /public/images
-const __dirname = path.resolve();
+// --------------------------------------------------------------------
+// STATIC IMAGE FOLDER (✔ FIXED FOR Render & Localhost)
+// --------------------------------------------------------------------
+const __dirname = path.resolve();  // Needed for ES modules
 
-app.use(
-  "/images",
-  express.static(path.join(__dirname, "public", "images"))
-);
-
-// Example: http://localhost:5000/images/oud.jpg
+// Serve images from: backend/public/images
+// Example: http://localhost:5000/images/rose.jpg
+app.use("/images", express.static(path.join(__dirname, "public/images")));
 
 
-// ------------------------------
-// CONNECT TO MONGO DB
-// ------------------------------
+// --------------------------------------------------------------------
+// DATABASE CONNECTION
+// --------------------------------------------------------------------
 mongoose
   .connect(process.env.MONGO_URL)
   .then(() => console.log("✅ MongoDB Connected"))
   .catch((err) => console.log("❌ MongoDB Error:", err));
 
 
-// ------------------------------
-// API ROUTES
-// ------------------------------
+// --------------------------------------------------------------------
+// API ROUTES (✔ PREFIXES FIXED)
+// --------------------------------------------------------------------
 app.use("/api/products", productRoutes);
 app.use("/api/reviews", reviewRoutes);
 
 
-// ------------------------------
+// --------------------------------------------------------------------
+// HOME ROUTE
+// --------------------------------------------------------------------
+app.get("/", (req, res) => {
+  res.send("Perfume API is running 🚀");
+});
+
+// --------------------------------------------------------------------
 // START SERVER
-// ------------------------------
+// --------------------------------------------------------------------
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
+  console.log(`🚀 Server running on http://localhost:${PORT}`);
 });
