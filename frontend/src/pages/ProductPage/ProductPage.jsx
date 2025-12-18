@@ -4,6 +4,7 @@ import api from "../../api/axios";
 import "./ProductPage.css";
 import { StoreContext } from "../../context/StoreContext";
 import ImageGallery from "../../components/ImageGallery/ImageGallery";
+import { API_BASE_URL } from "../../config";
 
 export default function ProductPage() {
   const { id } = useParams();
@@ -27,7 +28,13 @@ export default function ProductPage() {
       .get(`/products/${id}`)
       .then((res) => {
         const p = res.data;
-        setProduct(p);
+
+        // FIX IMAGE PATHS: full backend URL
+        const fixedImages = p.images?.map(
+          (img) => `${API_BASE_URL}/${img}`
+        );
+
+        setProduct({ ...p, images: fixedImages });
 
         // auto select first size
         setSelectedSize(p.sizes?.[0] || "");
@@ -37,7 +44,14 @@ export default function ProductPage() {
           const filtered = all.data.filter(
             (item) => item.brand === p.brand && item._id !== p._id
           );
-          setRelated(filtered.slice(0, 3));
+
+          // FIX RELATED PRODUCT IMAGE URLS
+          const fixedRelated = filtered.slice(0, 3).map((item) => ({
+            ...item,
+            image: `${API_BASE_URL}/${item.images[0]}`,
+          }));
+
+          setRelated(fixedRelated);
         });
       })
       .catch((err) => console.log(err));
@@ -78,9 +92,7 @@ export default function ProductPage() {
       <div className="info-section">
         <h1>{product.name}</h1>
 
-        <p>
-          <strong>Brand:</strong> {product.brand}
-        </p>
+        <p><strong>Brand:</strong> {product.brand}</p>
 
         <p className="description">{product.description}</p>
 
@@ -192,7 +204,7 @@ export default function ProductPage() {
                 to={`/product/${item._id}`}
                 className="related-card"
               >
-                <img src={item.images[0]} alt={item.name} />
+                <img src={item.image} alt={item.name} />
                 <h4>{item.name}</h4>
                 <p>₹{item.price}</p>
               </Link>

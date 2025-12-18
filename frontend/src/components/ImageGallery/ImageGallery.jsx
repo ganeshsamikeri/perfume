@@ -1,25 +1,43 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./ImageGallery.css";
 
-const ImageGallery = ({ images }) => {
-  const [mainImage, setMainImage] = useState(images[0]);
+const ImageGallery = ({ images = [] }) => {
+  const [mainImage, setMainImage] = useState(null);
+
+  // Set first image safely when API data arrives
+  useEffect(() => {
+    if (images && images.length > 0) {
+      setMainImage(images[0]);
+    }
+  }, [images]);
+
+  if (!mainImage) return <p>Loading images...</p>;
 
   return (
     <div className="gallery-container">
-      {/* Main Image */}
+      
+      {/* MAIN IMAGE */}
       <div className="main-image-wrapper">
-        <img src={mainImage} alt="product" className="main-image" />
+        <img
+          src={mainImage}
+          alt="product"
+          className="main-image"
+          loading="lazy"
+          onError={(e) => (e.target.src = "/fallback.jpg")}
+        />
       </div>
 
-      {/* Thumbnail Images */}
+      {/* THUMBNAILS */}
       <div className="thumbnail-row">
-        {images.map((img, idx) => (
+        {images.map((img) => (
           <img
-            key={idx}
+            key={img}             // ✅ FIX: stable key (no flicker)
             src={img}
             alt="thumbnail"
+            loading="lazy"
             className={`thumbnail ${mainImage === img ? "active-thumb" : ""}`}
             onClick={() => setMainImage(img)}
+            onError={(e) => (e.target.src = "/fallback-thumb.jpg")}
           />
         ))}
       </div>
